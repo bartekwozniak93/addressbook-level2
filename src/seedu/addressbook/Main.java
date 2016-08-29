@@ -20,10 +20,12 @@ import java.util.Optional;
  */
 public class Main {
 
+	
     /** Version info of the program. */
     public static final String VERSION = "AddessBook Level 2 - Version 1.0";
-
+ 
     private TextUi ui;
+    
     private StorageFile storage;
     private AddressBook addressBook;
 
