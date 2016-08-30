@@ -55,19 +55,17 @@ public class Address {
 
 	@Override
 	public String toString() {
-		return block.getBlock() + " " + street.getStreet() + " " + unit.getUnit() + " " + postalCode.getPostalCode();
+		return block.getBlock() + "," + street.getStreet() + "," + unit.getUnit() + "," + postalCode.getPostalCode();
 	}
 
 	@Override
 	public boolean equals(Object other) {
 		return other == this // short circuit if same object
 				|| (other instanceof Address // instanceof handles nulls
-						&& this.block.getBlock().equals(((Address) other).block.getBlock())
-						&& this.street.getStreet().equals(((Address) other).street.getStreet())
-						&& this.unit.equals(((Address) other).unit.getUnit())
-						&& this.postalCode.equals(((Address) other).postalCode.getPostalCode()));
+						 && this.toString().equals(((Address) other).toString())); // state check
 	}
 
+    
 	@Override
 	public int hashCode() {
 		return this.toString().hashCode();
