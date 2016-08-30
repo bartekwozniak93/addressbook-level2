@@ -10,7 +10,7 @@ public class Address {
 
     public static final String EXAMPLE = "123, some street";
     public static final String MESSAGE_ADDRESS_CONSTRAINTS = "Person addresses can be in any format";
-    public static final String ADDRESS_VALIDATION_REGEX = ".+";
+    public static final String ADDRESS_VALIDATION_REGEX = "(.*)([\\,])(.*)([\\,])(.*)";
 
     public final String value;
     private boolean isPrivate;
