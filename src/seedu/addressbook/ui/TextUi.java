@@ -18,34 +18,20 @@ import java.util.Scanner;
  */
 public class TextUi {
 
-    /** A decorative prefix added to the beginning of lines printed by AddressBook */
-    private static final String LINE_PREFIX = "|| ";
-
-    /** A platform independent line separator. */
-    private static final String LS = System.lineSeparator();
-
-    private static final String DIVIDER = "===================================================";
-
-    /** Format of indexed list item */
-    private static final String MESSAGE_INDEXED_LIST_ITEM = "\t%1$d. %2$s";
-
-
-    /** Offset required to convert between 1-indexing and 0-indexing.  */
-    public static final int DISPLAYED_INDEX_OFFSET = 1;
-
-    /** Format of a comment input line. Comment lines are silently consumed when reading user input. */
-    private static final String COMMENT_LINE_FORMAT_REGEX = "#.*";
-
     private final Scanner in;
     private final PrintStream out;
 
+    private Formatter formatter; 
+    
     public TextUi(){
         this(System.in, System.out);
+        formatter= new Formatter(out); 
     }
 
     public TextUi(InputStream in, PrintStream out) {
         this.in = new Scanner(in);
         this.out = out;
+        formatter= new Formatter(out); 
     }
 
     /**
@@ -66,7 +52,7 @@ public class TextUi {
      * @return true if input line is a comment.
      */
     private boolean isCommentLine(String rawInputLine) {
-        return rawInputLine.trim().matches(COMMENT_LINE_FORMAT_REGEX);
+        return rawInputLine.trim().matches(Formatter.COMMENT_LINE_FORMAT_REGEX);
     }
 
     /**
@@ -76,7 +62,7 @@ public class TextUi {
      * @return command (full line) entered by the user
      */
     public String getUserCommand() {
-        out.print(LINE_PREFIX + "Enter command: ");
+        out.print(Formatter.LINE_PREFIX + "Enter command: ");
         String fullInputLine = in.nextLine();
 
         // silently consume all ignored lines
@@ -84,86 +70,30 @@ public class TextUi {
             fullInputLine = in.nextLine();
         }
 
-        showToUser("[Command entered:" + fullInputLine + "]");
+        formatter.showToUser("[Command entered:" + fullInputLine + "]");
         return fullInputLine;
     }
 
-
     public void showWelcomeMessage(String version, String storageFilePath) {
-        String storageFileInfo = String.format(MESSAGE_USING_STORAGE_FILE, storageFilePath);
-        showToUser(
-                DIVIDER,
-                DIVIDER,
-                MESSAGE_WELCOME,
-                version,
-                MESSAGE_PROGRAM_LAUNCH_ARGS_USAGE,
-                storageFileInfo,
-                DIVIDER);
+        formatter.showWelcomeMessage(version, storageFilePath);
     }
 
     public void showGoodbyeMessage() {
-        showToUser(MESSAGE_GOODBYE, DIVIDER, DIVIDER);
+        formatter.showGoodbyeMessage();
     }
 
 
     public void showInitFailedMessage() {
-        showToUser(MESSAGE_INIT_FAILED, DIVIDER, DIVIDER);
+        formatter.showInitFailedMessage();
     }
-
-    /** Shows message(s) to the user */
-    public void showToUser(String... message) {
-        for (String m : message) {
-            out.println(LINE_PREFIX + m.replace("\n", LS + LINE_PREFIX));
-        }
-    }
-
-    /**
-     * Shows the result of a command execution to the user. Includes additional formatting to demarcate different
-     * command execution segments.
-     */
+    
     public void showResultToUser(CommandResult result) {
-        final Optional<List<? extends ReadOnlyPerson>> resultPersons = result.getRelevantPersons();
-        if(resultPersons.isPresent()) {
-            showPersonListView(resultPersons.get());
-        }
-        showToUser(result.getFeedbackToUser(), DIVIDER);
+        formatter.showResultToUser(result);
+    }
+    
+    public void showToUser(String... message) {
+        formatter.showToUser(message);
     }
 
-    /**
-     * Shows a list of persons to the user, formatted as an indexed list.
-     * Private contact details are hidden.
-     */
-    private void showPersonListView(List<? extends ReadOnlyPerson> persons) {
-        final List<String> formattedPersons = new ArrayList<>();
-        for (ReadOnlyPerson person : persons) {
-            formattedPersons.add(person.getAsTextHidePrivate());
-        }
-        showToUserAsIndexedList(formattedPersons);
-    }
-
-    /** Shows a list of strings to the user, formatted as an indexed list. */
-    private void showToUserAsIndexedList(List<String> list) {
-        showToUser(getIndexedListForViewing(list));
-    }
-
-    /** Formats a list of strings as a viewable indexed list. */
-    private static String getIndexedListForViewing(List<String> listItems) {
-        final StringBuilder formatted = new StringBuilder();
-        int displayIndex = 0 + DISPLAYED_INDEX_OFFSET;
-        for (String listItem : listItems) {
-            formatted.append(getIndexedListItem(displayIndex, listItem)).append("\n");
-            displayIndex++;
-        }
-        return formatted.toString();
-    }
-
-    /**
-     * Formats a string as a viewable indexed list item.
-     *
-     * @param visibleIndex visible index for this listing
-     */
-    private static String getIndexedListItem(int visibleIndex, String listItem) {
-        return String.format(MESSAGE_INDEXED_LIST_ITEM, visibleIndex, listItem);
-    }
 
 }
