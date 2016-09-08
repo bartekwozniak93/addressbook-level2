@@ -16,9 +16,36 @@ public class UtilsTest {
 
     @Test
     public void elementsAreUnique_elementsAreUnique() {
-    	ArrayList elements = new ArrayList(); 
-    	elements.add(5);
-    	elements.add(10);
+    	ArrayList<Integer> elements = new ArrayList<Integer>(); 
+    	for(int i =0; i<50; i++){
+    		elements.add(i);
+    	}
     	assertTrue(Utils.elementsAreUnique(elements));
     }
+    
+    @Test
+    public void elementsAreUnique_elementsAreNotUnique() {
+    	ArrayList<Integer> elements = new ArrayList<Integer>(); 
+    	elements.add(5);
+    	elements.add(5);
+    	assertFalse(Utils.elementsAreUnique(elements));
+    }
+    
+    @Test
+    public void isAnyNull_isNull() {
+    	ArrayList<Integer> elements = new ArrayList<Integer>(); 
+    	elements.add(5);
+    	elements.add(null);
+    	assertFalse(Utils.isAnyNull(elements));
+    }
+    
+    @Test
+    public void isAnyNull_isNotNull() {
+    	ArrayList<Integer> elements = new ArrayList<Integer>(); 
+    	for(int i =0; i<50; i++){
+    		elements.add(i);
+    	}
+    	assertFalse(Utils.isAnyNull(elements));
+    }
+    
 }
