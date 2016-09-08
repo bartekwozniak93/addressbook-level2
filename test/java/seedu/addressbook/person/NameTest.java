@@ -21,6 +21,12 @@ public class NameTest {
     public void isSimilar_nameIsNull(){
     	assertFalse(name.isSimilar(null));
     }
+    
+    @Test
+    public void isSimilar_sameNames() throws IllegalValueException{
+    	Name anotherName= new Name("Bartlomiej Wozniak");
+    	assertTrue(name.isSimilar(anotherName));
+    }
 }
 
 
