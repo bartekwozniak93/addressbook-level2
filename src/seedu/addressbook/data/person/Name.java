@@ -60,5 +60,12 @@ public class Name {
     public int hashCode() {
         return fullName.hashCode();
     }
+    
+    public boolean isSimilar(Name other){
+    	if(other == null)
+    		return false;
+    	else 
+    		return true;
+    }
 
 }
