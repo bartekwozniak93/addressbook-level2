@@ -2,8 +2,8 @@
 After studying this code and completing the corresponding exercises, you should be able to,
 
 1. [Apply Encapsulation `[LO-Encapsulation]`](#apply-encapsulation-lo-encapsulation)
-1. [Implement a class `[LO-ImplementClass]`](https://github.com/se-edu/addressbook-level2/blob/master/doc/LearningOutcomes.md#implement-a-class-lo-implementclass)
-1. [Follow the Single Responsibility Principle `[LO-SRP]`](https://github.com/se-edu/addressbook-level2/blob/master/doc/LearningOutcomes.md#follow-the-single-responsibility-principle-lo-srp)
+1. [Implement a class `[LO-ImplementClass]`](https://github.com/se-edu/TaskManager-level2/blob/master/doc/LearningOutcomes.md#implement-a-class-lo-implementclass)
+1. [Follow the Single Responsibility Principle `[LO-SRP]`](https://github.com/se-edu/TaskManager-level2/blob/master/doc/LearningOutcomes.md#follow-the-single-responsibility-principle-lo-srp)
 1. [Handle Exceptions `[LO-Exceptions]`](#handle-exceptions-lo-exceptions)
 1. [Use Inheritance to achieve code reuse `[LO-Inheritance]`](#use-inheritance-to-achieve-code-reuse-lo-inheritance)
 1. [Follow Interface Segregation Principle `[LO-ISP]`](#follow-interface-segregation-principle-lo-isp)
@@ -28,7 +28,7 @@ After studying this code and completing the corresponding exercises, you should 
 ### Implement a class `[LO-ImplementClass]`
 
 ##### Exercise: Split `Address` into more classes 
-* Assume the address is entered in the following format `a/BLOCK, STREET, UNIT, POSTAL_CODE` <br>
+* Assume the task is entered in the following format `a/BLOCK, STREET, UNIT, POSTAL_CODE` <br>
   e.g. `a/123, Clementi Ave 3, #12-34, 231534`
 * Split the `Address` class as follows.<br>
   <img src="images/AddressClasses.png" width='250'/>
@@ -63,7 +63,7 @@ Here's a slightly more difficult exercise.
 ##### Exercise: Handle 'file deleted' situation 
 
 * The current code does not handle the situation where the user deletes the storage file while the
-  AddressBook program is running. Use exceptions to handle that situation.
+  TaskManager program is running. Use exceptions to handle that situation.
 
 ------------------------------------------------------------------------------------------------------
 
@@ -84,9 +84,9 @@ in multiple `*Command` classes.
 
 The *Interface-Segregation Principle (ISP)* states that no client should be forced to depend on methods it does not use.
 
-Note how the `Person` class implements the `ReadOnlyPerson` interface so that clients who don't need write access to
-`Person` objects can access `Person` objects through the `ReadOnlyPerson` interface instead.
-<img src="images/ReadOnlyPersonUsage.png" width='600' />
+Note how the `Task` class implements the `ReadOnlyTask` interface so that clients who don't need write access to
+`Task` objects can access `Task` objects through the `ReadOnlyTask` interface instead.
+<img src="images/ReadOnlyTaskUsage.png" width='600' />
 
 ##### Exercise: Add a `Printable` interface 
 
@@ -105,11 +105,11 @@ Note how the `Person` class implements the `ReadOnlyPerson` interface so that cl
   String getPrintableString(Printable... printables){
   ```
   
-  The above method can be used to get a printable string representing a bunch of person details. 
+  The above method can be used to get a printable string representing a bunch of task details. 
   For example, you should be able to call that method like this:
   
   ```java
-  //p is a Person object
+  //p is a Task object
   return getPrintableString(p.getPhone(), p.getEmail(), p.getAddress()); 
   ```
 
@@ -125,11 +125,11 @@ e.g.<br> `Main.VERSION`, `Name.EXAMPLE`, `Utils.isAnyNull(...)`
 
 * Convert the `parse(...)` method of the `Parser` class to a class-level method. Note how this method
   can be either class-level or instance-level.
-* Note how the `setTags` method of the `Person` class cannot be converted to a class-level method.
+* Note how the `setTags` method of the `Task` class cannot be converted to a class-level method.
 * Add an instance-level member `int sequenceNumber` and a class-level variable `int nextSequenceNumber`
-  to the `Person` class. Using these two variables, ensure that each `Person` object has a unique sequence number
-  that indicates the order in which `Person` objects were created. e.g.
-  * `Adam` is the first `Person` object to be created. It is assigned sequence number 1.
+  to the `Task` class. Using these two variables, ensure that each `Task` object has a unique sequence number
+  that indicates the order in which `Task` objects were created. e.g.
+  * `Adam` is the first `Task` object to be created. It is assigned sequence number 1.
   * `Ben` and `Charlie` are created next, and assigned 2 and 3 respectively.
   * `Ben` is deleted.
   * `Daisy` is added next and is given sequence number 4.
@@ -142,14 +142,14 @@ Note the following examples of *composition* (filled diamond):
 
 Whole         | Parts
 :------------ | :----------------------------------
-`AddressBook` | `UniquePersonList` `UniqueTagList`
-`Person`      | `Name` `Phone` `Email` `Address`
+`TaskManager` | `UniqueTaskList` `UniqueTagList`
+`Task`      | `Name` `Phone` `Email` `Address`
 
 Contrast with these examples of *aggregration* (empty diamond):
 
 Container           | Contained
 :------------------ | :-------------------
-`UniquePersonList`  | `Person`
+`UniqueTaskList`  | `Task`
 `UuniqueTagList`    | `Tag`
 
 ------------------------------------------------------------------------------------------------------
@@ -161,8 +161,8 @@ The current design does not have any association classes.
 ##### Exercise: Add an Association Class `Tagging`
 
 * Assume the following:
-  1. There are commands to add and remove tags to a person in the address book.
-  2. When the AddressBook program exits, it should print out a list of all the tags added/deleted during that session.
+  1. There are commands to add and remove tags to a task in the task book.
+  2. When the TaskManager program exits, it should print out a list of all the tags added/deleted during that session.
     e.g.
 
     ```sh
@@ -171,7 +171,7 @@ The current design does not have any association classes.
     + Jean Wong [client]
     ```
 * To support (ii) above, implement an Association Class called `Tagging` as given in the diagram below. <br>
-  Each `Tagging` object will represent an adding or deleting of a tag for a specific person that happened
+  Each `Tagging` object will represent an adding or deleting of a tag for a specific task that happened
   during that session.<br>
   <img src="images/TaggingClass.png" width='400' />
 
@@ -179,11 +179,11 @@ The current design does not have any association classes.
 
 ### Use JUnit to implement unit tests `[LO-JUnit]`
 
-Note the `test/seedu/addressbook/parser/ParserTest.java` class that users Junit to implement automated unit tests.
+Note the `test/seedu/TaskManager/parser/ParserTest.java` class that users Junit to implement automated unit tests.
 
 ##### Exercise: Write unit tests for the `Utils` class
 
-* Add a `test/seedu/addressbook/common/UtilsTest.java` containing JUnit tests for the `Utils` class.
+* Add a `test/seedu/TaskManager/common/UtilsTest.java` containing JUnit tests for the `Utils` class.
 
 ------------------------------------------------------------------------------------------------------
 
@@ -210,10 +210,10 @@ Note the `test/seedu/addressbook/parser/ParserTest.java` class that users Junit 
 
 ### Work in a 2KLoC code base `[LO-2KLoC]`
 
-##### Exercise: Enhance AddressBook
+##### Exercise: Enhance TaskManager
 
-Add a feature to AddressBook. Here are some suggestions.
+Add a feature to TaskManager. Here are some suggestions.
 * An Edit command
 * A Sort command
-* List all persons automatically after an add or delete command
+* List all tasks automatically after an add or delete command
 * Any other enhancement that you might see fit
